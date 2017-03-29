@@ -9,6 +9,7 @@ um auf eine Datenbank zuzugreifen.
 -->
 <html>
 <head>
+    <link rel="stylesheet" href="/js/jquery.js" type="text/css" />
 </head>
 
 <?php
@@ -16,10 +17,16 @@ um auf eine Datenbank zuzugreifen.
 $dsn = "mysql:host=localhost;dbname=c9";
 $user = "markschuster";
 $pass = "";
+// Ein assoziatives Array daraus machen
+$options = array(
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    // Nur für die Entwicklung verwenden (Sendet Fehlermeldungen aus)
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 
+    );
 
 // Verbindung testen
 try {
-    $db = new PDO($dsn, $user, $pass);
+    $db = new PDO($dsn, $user, $pass, $options);
     // Wenn erfolgreich, gebe aus und spiele ab
     echo "Verbindung erfolgreich";
 ?> 
@@ -32,14 +39,22 @@ try {
     <img src="/giphy.gif" width="200px"></img>
     
 <?php    
-// Wenn fehlerhaft, gebe aus
+// Wenn fehlerhaft, gebe den Fehler aus
 } catch(PDOException $e){
     echo "Fehler: " . $e->getMessage();
 }
+
+// In $stmt speichern und aus der Datenbank Infos rausgreifen, sinnvoll benennen
+$stmt = $db->query("SELECT autor AS Buchautor, titel AS Buchtitel, isbn AS ISBN, preis AS Preis FROM buecher");
 ?>
+<pre>
+    <?php var_dump($stmt->fetchAll());?>
+</pre>
+
+
+
 
 <body>
-
 
 </body>
 </html>
