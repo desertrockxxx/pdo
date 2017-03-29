@@ -22,7 +22,7 @@ $pass = "";
 $options = array(
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     // Nur für die Entwicklung verwenden (Sendet Fehlermeldungen aus)
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 
+    // PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 
     );
 
 // Verbindung testen
@@ -59,6 +59,7 @@ if(isset($_REQUEST['edit'])){
     $einzelBuchArray = $stmt->fetchAll();
 }
 
+// aendern geklickt, dann 
 if(isset($_REQUEST['aendern'])){
    
     $id = $_REQUEST['id'];
@@ -66,9 +67,10 @@ if(isset($_REQUEST['aendern'])){
     $autor = $_REQUEST['autor'];
     $isbn = $_REQUEST['isbn'];
     $preis = $_REQUEST['preis'];
-   
-    $stmt = $db->query("UPDATE buecher SET titel = '" . $titel . "', autor ='" . $autor . "', isbn ='" . $isbn . "', preis ='" . $preis . "' WHERE id = '" . $id ."'");
     
+    
+    // intval($id) weil eine Datenbank immer String zurückgibt, deswegen Umwandlung in int
+    $stmt = $db->query("UPDATE buecher SET titel = '" . $titel . "', autor ='" . $autor . "', isbn ='" . $isbn . "', preis ='" . $preis . "' WHERE id = '" . intval($id) ."'");
 }
 
 
@@ -83,7 +85,6 @@ if(isset($_REQUEST['delete'])){
     
     $db->query("DELETE FROM buecher WHERE id = " . $_REQUEST['id']);
 }
-
 
 
 // Wenn Hinzuefugen geklickt und Buchtitel nicht leer, dann in DB übergeben
