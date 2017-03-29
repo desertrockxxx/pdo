@@ -9,6 +9,7 @@ um auf eine Datenbank zuzugreifen.
 -->
 <html>
 <head>
+    <title>Buchliste</title>
     <link rel="stylesheet" href="/js/jquery.js" type="text/css" />
 </head>
 
@@ -46,15 +47,35 @@ try {
 
 // In $stmt speichern und aus der Datenbank Infos rausgreifen, sinnvoll benennen
 $stmt = $db->query("SELECT autor AS Buchautor, titel AS Buchtitel, isbn AS ISBN, preis AS Preis FROM buecher");
+
+$buecher = $stmt->fetchAll();
 ?>
-<pre>
-    <?php var_dump($stmt->fetchAll());?>
-</pre>
-
-
-
 
 <body>
+
+<table border="1px">
+    <thead>
+        <tr>
+            <th>Buchtitel</th>
+            <th>Buchautor</th>
+            <th>ISBN</th>
+            <th>Preis</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($buecher as $buch) { ?>
+        <tr>
+            <td> <?php echo $buch['Buchtitel'];?></td>
+            <td> <?php echo $buch['Buchautor'];?></td>
+            <td> <?php echo $buch['ISBN'];?></td>
+            <td> <?php echo $buch['Preis'];?></td>
+        <?php } ?>
+        </tr>
+    </tbody>
+</table>
+
+
+
 
 </body>
 </html>
